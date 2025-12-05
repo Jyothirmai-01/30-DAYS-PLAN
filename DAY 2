@@ -1,0 +1,135 @@
+📅 DAY-2 — Data Cleaning + SQL Integration
+🎯 Today’s Goals
+
+✔ Clean raw data → Create clean dataset
+✔ Add Data Quality checks
+✔ Store cleaned data in structured folders
+✔ Start SQL work for analysis
+✔ Update repo professional format
+
+🧩 Task-1 — Create Clean Layer Folder
+
+Inside your project create:
+
+/data/raw/        → raw downloaded data
+/data/clean/      → cleaned dataset
+
+
+Move your existing CSV file to:
+
+📌 /data/raw/raw_tips_data.csv
+
+🧩 Task-2 — Write Data Cleaning Script
+
+File: clean_data.py
+Paste this real-time cleaning pipeline:
+
+import pandas as pd
+
+# Load raw data
+df = pd.read_csv("data/raw/raw_tips_data.csv")
+
+# Data Quality Check
+print("Initial Data Shape:", df.shape)
+
+# Remove duplicates
+df = df.drop_duplicates()
+
+# Handling missing values
+df = df.dropna()  # For now, drop rows with nulls
+
+# Standardize column names
+df.columns = df.columns.str.lower().str.replace(" ", "_")
+
+# Save Clean Data
+df.to_csv("data/clean/clean_tips_data.csv", index=False)
+
+print("Clean Data Saved Successfully!")
+print("Final Data Shape:", df.shape)
+
+
+Run it → You must see:
+✔ data shape reduced if any duplicates or nulls
+✔ new CSV created → /data/clean/clean_tips_data.csv
+
+🧩 Task-3 — Create SQL Queries
+
+Folder: /sql/
+
+File-1: table_create.sql
+
+CREATE TABLE tips_clean (
+    total_bill FLOAT,
+    tip FLOAT,
+    sex VARCHAR(10),
+    smoker VARCHAR(10),
+    day VARCHAR(10),
+    time VARCHAR(10),
+    size INT
+);
+
+
+File-2: basic_queries.sql
+
+SELECT * FROM tips_clean LIMIT 10;
+
+SELECT sex, AVG(tip) AS avg_tip
+FROM tips_clean
+GROUP BY sex;
+
+SELECT day, SUM(total_bill) AS total_sales
+FROM tips_clean
+GROUP BY day
+ORDER BY total_sales DESC;
+
+
+Upload both .sql files to GitHub.
+
+🧩 Task-4 — Notebook Update
+
+📌 Add new notebook:
+
+notebooks/Day2_Data_Cleaning.ipynb
+
+
+Include:
+✔ Before & after data shapes
+✔ Missing values count
+✔ At least 3 insights in Markdown
+
+Example insights:
+
+- Weekend has higher total sales than weekdays  
+- Male customers give slightly higher tips  
+- Dinner time revenue > Lunch time revenue  
+
+🧩 Task-5 — README Update
+
+Add this section:
+
+## Day-2 Work Summary
+✔ Cleaned raw data using Python (duplicates & nulls removed)
+✔ Stored cleaned data in /data/clean/
+✔ Created SQL queries to analyze cleaned dataset
+✔ Documented insights in Jupyter Notebook
+
+🏆 Day-2 Deliverables Checklist
+Task	Status
+Clean layer folder added	⬜
+clean_data.py completed	⬜
+clean_tips_data.csv generated	⬜
+SQL folder + 2 scripts	⬜
+Day-2 Notebook added	⬜
+README updated	⬜
+Commit + Push to GitHub	⬜
+📌 Once done → You reply:
+
+👉 Day-2 Completed
+
+Then I will:
+✔ Review your repo
+✔ Give Day-3 task: EDA + Visualizations + More SQL
+✔ Provide YouTube sources for real Data Engineering best practices
+✔ Enhance your project structure like 4-years experience portfolio
+
+Let’s build it step-by-step. You're doing amazing 🚀🔥
