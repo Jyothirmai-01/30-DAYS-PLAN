@@ -1,0 +1,102 @@
+📅 DAY-1 — Data Ingestion + GitHub Setup
+🎯 Day-1 Outcomes
+
+✔ Your first real Data Engineering ETL step
+✔ Industry-level folder structure
+✔ GitHub working like a professional engineer
+
+🧩 Task-1 — Python Data Ingestion Script
+
+Create or open the file:
+📌 data_ingestion.py
+
+Paste this code 👇
+
+import pandas as pd
+
+# Extract: Load data from online source
+url = "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/tips.csv"
+df = pd.read_csv(url)
+
+print("⭐ Data Loaded Successfully ⭐")
+print(df.head())
+
+# Load: Save raw data locally
+df.to_csv("raw_tips_data.csv", index=False)
+print("📁 raw_tips_data.csv created!")
+
+
+Run it → It must:
+✔ Print top 5 rows
+✔ Create a raw_tips_data.csv file
+
+🧩 Task-2 — Create /notebooks/ Folder + Notebook
+
+📌 File: notebooks/Day1_Ingestion.ipynb
+
+Sections inside notebook:
+
+# Day-1 Data Ingestion Notebook
+
+## Step-1: Import Libraries
+
+## Step-2: Load Data from URL
+
+## Step-3: Data Overview
+df.head()
+df.info()
+df.describe()
+
+## Step-4: Save raw file
+
+
+
+Add 2–3 lines short explanation in Markdown.
+
+🧩 Task-3 — GitHub Commit + Push
+
+Commit message example:
+
+Day-1: Ingestion pipeline + Notebook added
+
+
+After push → confirm files appear online:
+✔ data_ingestion.py
+✔ raw_tips_data.csv
+✔ notebooks/Day1_Ingestion.ipynb
+✔ Updated README
+
+🧩 Task-4 — Add These Interview Answers in README
+
+Copy + answer in your own words (short):
+
+### Day-1 Interview Knowledge
+
+1️⃣ What is data ingestion?
+2️⃣ Why do we store raw data separately?
+3️⃣ What are common data file formats?
+
+
+Example format:
+
+Answer-1: ...
+Answer-2: ...
+Answer-3: ...
+
+🏆 Day-1 Deliverables Checklist
+Task	Status
+Data ingestion script	⬜
+raw CSV generated	⬜
+Jupyter Notebook created	⬜
+README interview answers	⬜
+Commit + Push to GitHub	⬜
+
+When all are ✔ → You reply:
+
+👉 Day-1 Completed
+
+Then I will:
+✔ Review your GitHub
+✔ Provide Day-2 tasks (Data Cleaning + SQL Integration)
+✔ Provide best YouTube links for each topic
+✔ Add your first project in portfolio section
