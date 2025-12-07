@@ -1,0 +1,91 @@
+🗂 Day-4 Task: Data Validation & Aggregations
+Task 1 — Data Validation Checks
+
+We need to make sure the data quality is good before loading it to a warehouse.
+
+Create a new script:
+
+📄 data/clean/data_validation.py
+
+Paste this template:
+
+import pandas as pd
+
+# Load the cleaned data
+df = pd.read_csv('data/clean/cleaned_sales_data.csv')
+
+# 1. Check for missing values
+print("Missing Values:\n", df.isnull().sum())
+
+# 2. Check for duplicates
+duplicates = df.duplicated()
+print(f"Number of duplicate rows: {duplicates.sum()}")
+
+# 3. Validate data types
+print("Data Types:\n", df.dtypes)
+
+# 4. Validate specific columns (example: quantity > 0, price > 0)
+invalid_quantity = df[df['quantity'] <= 0]
+invalid_price = df[df['price'] <= 0]
+
+print(f"Rows with invalid quantity: {len(invalid_quantity)}")
+print(f"Rows with invalid price: {len(invalid_price)}")
+
+
+✅ Outcome: You’ll get a report showing missing, duplicate, or invalid data.
+
+Task 2 — Aggregations & Insights
+
+We create aggregated metrics, which is common in a Data Engineering workflow.
+
+Create a new script:
+
+📄 data/transform/aggregations.py
+
+Paste this template:
+
+import pandas as pd
+
+# Load cleaned data
+df = pd.read_csv('data/clean/cleaned_sales_data.csv')
+
+# 1. Total sales per day
+sales_per_day = df.groupby('date')['total_amount'].sum().reset_index()
+sales_per_day.to_csv('data/output/sales_per_day.csv', index=False)
+
+# 2. Total quantity sold per product
+quantity_per_product = df.groupby('product_id')['quantity'].sum().reset_index()
+quantity_per_product.to_csv('data/output/quantity_per_product.csv', index=False)
+
+# 3. Top 5 products by revenue
+top_products = df.groupby('product_id')['total_amount'].sum().sort_values(ascending=False).head(5).reset_index()
+top_products.to_csv('data/output/top_products.csv', index=False)
+
+
+✅ Outcome: You’ll have CSV files with aggregated metrics.
+
+Task 3 — Modularize Your Pipeline
+
+Combine previous cleaning and aggregation scripts into a single run pipeline script.
+
+Create:
+
+📄 pipeline/run_pipeline.py
+
+Paste:
+
+import subprocess
+
+# Run cleaning script
+subprocess.run(["python", "data/clean/transform_data.py"])
+
+# Run validation script
+subprocess.run(["python", "data/clean/data_validation.py"])
+
+# Run aggregation script
+subprocess.run(["python", "data/transform/aggregations.py"])
+
+print("Pipeline executed successfully!")
+
+
+✅ Outcome: You can now run your pipeline with one command and get cleaned + validated + aggregated data.
