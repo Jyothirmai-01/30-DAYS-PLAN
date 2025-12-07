@@ -1,0 +1,124 @@
+📅 Day-3 — Transformation + SQL Loading Prep
+🎯 Goals for Today
+
+✔ Add new transformed features
+✔ Perform deeper cleaning & data formatting
+✔ Save final data version for database load
+✔ Add advanced SQL queries
+✔ Update notebook & README
+
+🧩 Task-1 — Add New Columns (Feature Engineering)
+
+Create a new script:
+
+📄 data/clean/transform_data.py
+
+Paste this 👇
+
+import pandas as pd
+
+# Load cleaned data
+df = pd.read_csv("data/clean/clean_tips_data.csv")
+
+print("Before Transformation:", df.shape)
+
+# Convert text columns to title case
+df['sex'] = df['sex'].str.title()
+df['smoker'] = df['smoker'].str.title()
+df['day'] = df['day'].str.title()
+df['time'] = df['time'].str.title()
+
+# Calculate tip percentage
+df["tip_percent"] = round((df["tip"] / df["total_bill"]) * 100, 2)
+
+# Convert time to numeric: Dinner=1, Lunch=0
+df["is_dinner"] = df["time"].apply(lambda x: 1 if x == "Dinner" else 0)
+
+# Save transformed version
+df.to_csv("data/clean/final_tips_data.csv", index=False)
+
+print("Transformation Completed Successfully!")
+print("After Transformation:", df.shape)
+
+
+📌 Run it in VS Code Terminal:
+
+python data/clean/transform_data.py
+
+🧩 Task-2 — SQL: Create Final Table
+
+📂 Folder → /sql/
+
+File → 02_create_final_table.sql
+
+CREATE TABLE final_tips_data (
+    total_bill FLOAT,
+    tip FLOAT,
+    sex VARCHAR(10),
+    smoker VARCHAR(10),
+    day VARCHAR(10),
+    time VARCHAR(10),
+    size INT,
+    tip_percent FLOAT,
+    is_dinner INT
+);
+
+🧩 Task-3 — SQL Insights Queries
+
+📄 File: 03_insights_queries.sql
+
+Paste:
+
+-- Top revenue days
+SELECT day, SUM(total_bill) AS total_sales
+FROM final_tips_data
+GROUP BY day
+ORDER BY total_sales DESC;
+
+-- Average tip % by gender
+SELECT sex, AVG(tip_percent) AS avg_tip_percent
+FROM final_tips_data
+GROUP BY sex;
+
+-- Dinner vs Lunch Sales
+SELECT is_dinner, SUM(total_bill) AS revenue
+FROM final_tips_data
+GROUP BY is_dinner
+ORDER BY revenue DESC;
+
+
+Upload to GitHub ✔
+
+🧩 Task-4 — Notebook Update
+
+📌 Add: notebooks/Day3_Transformations.ipynb
+
+Include:
+
+✔ Before vs After transformation shape
+✔ Show new columns
+✔ Insights with graphs (bar chart recommended)
+
+example chart code:
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("../data/clean/final_tips_data.csv")
+
+df.groupby("day")["total_bill"].sum().plot(kind="bar")
+plt.title("Total Sales by Day")
+plt.xlabel("Day")
+plt.ylabel("Sales")
+plt.show()
+
+🧩 Task-5 — README Update
+
+Add:
+
+Day-3 Work Summary
+
+✔ Added new transformation features
+✔ Created final dataset for SQL loading
+✔ Developed advanced SQL insight queries
+✔ Visualized insights in notebook
