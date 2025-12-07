@@ -1,0 +1,89 @@
+🧠 Day-1 — Interview Q&A (With Real-Time Style Answers)
+🔹 SQL
+1️⃣ Difference: INNER JOIN vs LEFT JOIN
+
+👉 Real-time Answer
+
+INNER JOIN returns only the matching records between both tables.
+LEFT JOIN returns all records from the left table and the matching ones from the right — if no match, NULLs are returned.
+In projects, we mostly use LEFT JOIN when left table is our primary entity like customers, and still require full visibility even if related data is missing.
+
+2️⃣ What are Window Functions?
+
+👉 Real-time Answer
+
+Window functions allow row-level calculations without collapsing rows like GROUP BY.
+I use them mainly for ranking employees by salary, running totals, and time-based analytics in data pipelines (e.g., ordering transactions within a user partition).
+
+3️⃣ Query: 2nd Highest Salary
+SELECT MAX(salary)
+FROM employees
+WHERE salary < (SELECT MAX(salary) FROM employees);
+
+
+👉 Real-time Explanation to Add
+
+This avoids issues with duplicates and returns the true 2nd highest value by excluding the maximum salary dynamically.
+
+🔹 Data Engineering (Real-Time Concepts)
+Data Lake vs Data Warehouse (Professional Answer)
+Feature	Data Lake	Data Warehouse
+Data Type	Raw (Structured + Semi-structured + Unstructured)	Processed & Structured
+Schema	Schema-on-read	Schema-on-write
+Storage Cost	Low (e.g., S3)	High
+Users	Data Scientists, ML, Engineers	BI Users, Business Teams
+Use-Case	Exploration, ML Training	Reporting & Analytics
+
+👉 Real-time Answer Add-on
+
+In my pipelines, I ingest data first into Data Lake (Bronze → Silver → Gold zones) and then push curated data into Data Warehouse for analytics.
+
+🔹 Apache Spark
+Transformation vs Action
+Transformation	Action
+Lazy execution	Trigger execution
+Returns new DF	Returns value/ writes output
+Examples: filter(), select()	Examples: show(), count(), write()
+
+👉 Real-time Add-on
+
+We design pipelines with more transformations and only 1-2 actions at the end to optimize jobs under the DAG execution model.
+
+🔹 AWS Cloud
+How do you orchestrate a Data Pipeline in AWS?
+
+👉 Real-time Answer
+
+I generally orchestrate ETL pipelines using AWS Step Functions + Glue + Lambda.
+Data flows like:
+S3 (raw) → Glue (PySpark transformations) → S3/Redshift (curated)
+Error handling with Step Functions retry policies and EventBridge alerts.
+
+🔹 Scenario-Based (Most Important!)
+❌ Pipeline failed due to missing columns — What will you do?
+
+👉 Real-time Excellent Answer
+
+I always implement schema validation before processing.
+If columns are missing:
+
+Extract schema from Glue Catalog / metadata store
+
+Validate input schema using PySpark / JSON rules
+
+Redirect bad records to a quarantine S3 folder
+
+Log exceptions in CloudWatch + notify via SNS/Slack
+
+Fix upstream or enable default column handling for optional fields
+
+This ensures pipeline reliability without compromising data quality.
+
+📌 What You Should Say at End of Any Answer
+
+You can add:
+
+“Based on best practices from my recent projects…”
+“This approach avoids reprocessing cost and ensures data quality.”
+
+This makes your answer sound real-time and professional. 💼✨
