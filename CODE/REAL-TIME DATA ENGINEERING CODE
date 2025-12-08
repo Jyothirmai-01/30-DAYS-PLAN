@@ -1,0 +1,105 @@
+✅ 1️⃣ SQL for Data Engineering (Daily Queries You Will Write)
+
+Joins (Fact + Dimensions)
+
+Aggregations → SUM, AVG, COUNT, MIN, MAX
+
+Window Functions (very important for interviews)
+
+Complex Grouping & Filtering
+
+Date-based Analytics
+
+Incremental Loads
+
+Data Quality Checks in SQL
+
+📌 Example (real sales analysis query)
+
+SELECT p.category,
+       SUM(f.quantity * f.price) AS revenue,
+       RANK() OVER (ORDER BY SUM(f.quantity * f.price) DESC) AS revenue_rank
+FROM fact_sales f
+JOIN dim_product p ON f.product_id = p.product_id
+GROUP BY p.category;
+
+🐍 2️⃣ Python for Data Pipelines (Scripts you will write regularly)
+
+Read File (CSV, JSON, Parquet)
+
+Data Cleaning using Pandas/PySpark
+
+Feature Engineering
+
+Error & Logging handling
+
+Connect to Databases
+
+Write cleaned data to Data Warehouse
+
+📌 Example (Load → Transform → Save)
+
+import pandas as pd
+
+df = pd.read_csv("data/raw/sales.csv")
+df['total_amount'] = df['quantity'] * df['price']
+df.to_csv("data/clean/cleaned_sales.csv", index=False)
+
+🧱 3️⃣ Data Modeling (Star Schema)
+
+You will create tables like:
+
+fact_sales
+
+dim_product
+
+dim_customer
+
+dim_date
+
+📌 Example with keys:
+
+CREATE TABLE fact_sales (
+    sale_id INT PRIMARY KEY,
+    product_id INT,
+    customer_id INT,
+    date_id INT,
+    quantity INT,
+    total_amount DECIMAL(10,2)
+);
+
+⛓️ 4️⃣ ETL / Pipeline Automation
+
+Scripts scheduled using Airflow / Cron
+
+Logs + Error notifications
+
+📌 Example Airflow task format:
+
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+
+☁️ 5️⃣ Cloud Integrations (AWS)
+
+You will write code for:
+
+S3 Data Ingestion
+
+Glue ETL jobs
+
+Redshift SQL queries
+
+📌 Example: Upload File to S3
+
+s3.upload_file("cleaned_sales.csv", "retail-bucket", "clean/sales.csv")
+
+🔥 6️⃣ Spark / Big Data Processing (PySpark)
+
+Handle large datasets
+
+Transformations + Actions
+
+📌 Example:
+
+df = spark.read.csv("s3://retail-bucket/raw/")
+df.groupBy("category").sum("revenue").show()
