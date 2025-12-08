@@ -1,0 +1,139 @@
+📅 Day-5 Tasks — Build Data Warehouse (Star Schema + SQL Queries)
+🎯 Goal
+
+Transform your processed retail data into analytical tables used for reporting & dashboards.
+
+We will create:
+
+Type	Table Name	Description
+Fact	fact_sales	Transaction-level sales data
+Dimension	dim_product	Product master details
+Dimension	dim_date	Date breakdown (day, month, year)
+Dimension	dim_store (Optional for now)	Store-level attributes
+🛠️ Folder to Create
+/sql/
+    ├── create_tables.sql
+    ├── insert_data.sql
+
+🧱 Step-1 — Create Data Warehouse Tables
+
+Paste this into sql/create_tables.sql👇
+
+-- Dimension Product Table
+CREATE TABLE IF NOT EXISTS dim_product (
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(255),
+    category VARCHAR(100),
+    price DECIMAL(10,2)
+);
+
+-- Dimension Date Table
+CREATE TABLE IF NOT EXISTS dim_date (
+    date_id DATE PRIMARY KEY,
+    year INT,
+    month INT,
+    day INT,
+    weekday VARCHAR(20)
+);
+
+-- Fact Sales Table
+CREATE TABLE IF NOT EXISTS fact_sales (
+    sale_id INT PRIMARY KEY,
+    product_id INT,
+    date_id DATE,
+    quantity INT,
+    total_amount DECIMAL(10,2),
+    FOREIGN KEY (product_id) REFERENCES dim_product(product_id),
+    FOREIGN KEY (date_id) REFERENCES dim_date(date_id)
+);
+
+📥 Step-2 — Insert Data Into Tables
+
+Paste this into sql/insert_data.sql👇
+(Assuming data already processed from earlier pipeline outputs)
+
+-- Insert Product Data
+INSERT INTO dim_product (product_id, product_name, category, price)
+SELECT DISTINCT product_id, product_name, category, price
+FROM cleaned_sales_data;
+
+-- Insert Date Data
+INSERT INTO dim_date (date_id, year, month, day, weekday)
+SELECT DISTINCT
+    sale_date AS date_id,
+    YEAR(sale_date),
+    MONTH(sale_date),
+    DAY(sale_date),
+    DAYNAME(sale_date)
+FROM cleaned_sales_data;
+
+-- Insert Sales Fact Data
+INSERT INTO fact_sales (sale_id, product_id, date_id, quantity, total_amount)
+SELECT
+    sale_id,
+    product_id,
+    sale_date,
+    quantity,
+    total_bill
+FROM cleaned_sales_data;
+
+🔍 Step-3 — Analytics SQL (Add to README + Use for Portfolio)
+🎯 Business Questions (Interview-Centric)
+
+✔ Top 5 best-selling products
+✔ Sales trend by month
+✔ Category-wise revenue
+✔ Weekend vs Weekday sales
+
+Paste these queries below into the same folder as analysis_queries.sql 👇
+
+-- Top 5 Best Selling Products
+SELECT p.product_name, SUM(f.quantity) AS total_sold
+FROM fact_sales f
+JOIN dim_product p ON f.product_id = p.product_id
+GROUP BY p.product_name
+ORDER BY total_sold DESC
+LIMIT 5;
+
+-- Monthly Sales Trend
+SELECT d.year, d.month, SUM(f.total_amount) AS total_sales
+FROM fact_sales f
+JOIN dim_date d ON f.date_id = d.date_id
+GROUP BY d.year, d.month
+ORDER BY d.year, d.month;
+
+-- Revenue by Category
+SELECT p.category, SUM(f.total_amount) AS revenue
+FROM fact_sales f
+JOIN dim_product p ON f.product_id = p.product_id
+GROUP BY p.category
+ORDER BY revenue DESC;
+
+-- Weekend vs Weekday Sales
+SELECT d.weekday,
+       SUM(f.total_amount) AS total_sales
+FROM fact_sales f
+JOIN dim_date d ON f.date_id = d.date_id
+GROUP BY d.weekday;
+
+📌 Step-4 — Update README.md
+
+Add a new section:
+
+### 🚀 Day-5 — Data Warehouse Design + SQL Analytics
+
+✔ Created dimension & fact tables (Star Schema)
+✔ Inserted cleaned sales data into warehouse
+✔ Added SQL business queries for analytics
+
+
+You can also add this architecture diagram later (I’ll help you on Day-7).
+
+🧠 Learning Outcome
+
+You now know how to:
+
+✔ Design a Data Warehouse
+✔ Create Fact/Dimension model
+✔ Write SQL analytics like a real Data Engineer
+✔ Document and organize SQL scripts professionally
