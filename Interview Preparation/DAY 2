@@ -1,0 +1,117 @@
+# 📝 Day-2 — SQL + Data Engineering Interview Q&A
+
+### **Q1️⃣: What is Data Normalization? Why do we use it?**
+
+**Answer:**
+
+> "Normalization is the process of organizing data into tables to reduce data redundancy and improve data integrity.
+> In transactional systems, normalized tables make updates faster and consistent."
+
+---
+
+### **Q2️⃣: What is Denormalization? Where is it used?**
+
+**Answer:**
+
+> "Denormalization is merging tables to reduce joins and improve query performance.
+> It is mainly used in Data Warehousing for fast analytical queries."
+
+---
+
+### **Q3️⃣: What is Star Schema? Why is it preferred?**
+
+**Answer:**
+
+> "A Star Schema has one Fact table linked with multiple Dimension tables.
+> It is preferred for reporting because it is easy to understand, supports fast aggregations, and improves query performance."
+
+---
+
+### **Q4️⃣: Difference between Fact Table and Dimension Table?**
+
+| Feature | Fact Table             | Dimension Table       |
+| ------- | ---------------------- | --------------------- |
+| Content | Measures, numeric data | Descriptive details   |
+| Growth  | Very large             | Smaller               |
+| Keys    | Contains foreign keys  | Contains primary keys |
+
+**Short Answer:**
+
+> "Facts = numbers we measure
+> Dimensions = business context for those numbers"
+
+---
+
+### **Q5️⃣: What is OLTP vs OLAP?**
+
+| OLTP                          | OLAP                         |
+| ----------------------------- | ---------------------------- |
+| Online Transaction Processing | Online Analytical Processing |
+| Small, frequent transactions  | Large, analytical queries    |
+| Normalized schema             | Star/Snowflake schema        |
+| Example: Banking app          | Example: BI dashboards       |
+
+---
+
+### **Q6️⃣: What are Window Functions? Why used?**
+
+**Answer:**
+
+> "Window functions perform calculations like ranking or running totals **without** grouping or losing detail.
+> Used in analytics like top-N products, trend analysis, customer segmentation."
+
+Example:
+
+```sql
+RANK() OVER (ORDER BY revenue DESC)
+```
+
+---
+
+### **Q7️⃣: What is ETL vs ELT?**
+
+| ETL                      | ELT                                    |
+| ------------------------ | -------------------------------------- |
+| Transform before loading | Transform after loading                |
+| Used in on-prem DW       | Used in cloud DW (Snowflake, BigQuery) |
+
+**Short Answer:**
+
+> "ETL = Transform then Load
+> ELT = Load then Transform (Cloud Data Engineering approach)"
+
+---
+
+### **Q8️⃣: What is a Primary Key and Foreign Key?**
+
+**Answer:**
+
+> "Primary Key uniquely identifies a row in a table.
+> Foreign Key connects two tables and enforces relationship integrity."
+
+---
+
+### **Q9️⃣: What is Data Lake vs Data Warehouse?**
+
+| Data Lake               | Data Warehouse               |
+| ----------------------- | ---------------------------- |
+| Raw & unstructured data | Processed & structured data  |
+| Low-cost storage        | High performance storage     |
+| Example: AWS S3         | Example: Snowflake, Redshift |
+
+---
+
+### **Q🔟: What does GROUP BY do?**
+
+**Short Answer:**
+
+> "GROUP BY groups data based on columns and performs aggregations like SUM, AVG, COUNT for each group."
+
+---
+
+## 🎯 Practice Task for Today
+
+Answer this in **your own words** (just 2–3 lines):
+
+📌 **What are Dimension Tables? Give one example.**
+
